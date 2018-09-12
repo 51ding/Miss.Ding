@@ -20,15 +20,14 @@ Page({
   },
   onLoad: function(option) {
     this.setData({
-      albumid: option.albumid || "5b986c9fd6f4ae24839bb7d7"
+      albumid: option.albumid
     });
-    this.createAnimation();
-    this.startAnimation();
-    setTimeout(this.initMusicPlayer.bind(this), 1000);
-    this.getImageData();
+    //this.createAnimation();
+    //this.startAnimation();
+    //setTimeout(this.initMusicPlayer.bind(this), 1000);
   },
   onShow: function() {
-    
+    this.getImageData();
   },
   onHide: function() {
     //this.clearAnimation();
@@ -219,15 +218,22 @@ Page({
     this.getImageData();
   },
   getImageData:function(){
-    var ImageTable = new wx.BaaS.TableObject(table.image.id);
-		var CommentTable=new wx.BaaS.TableObject(table.comments.id);
-    var query = new wx.BaaS.Query();
-    query.compare('albumid', '=', this.data.albumid);
-    ImageTable.setQuery(query).orderBy('created_at').find().then(res=>{
-      this.setData({
-        imageList: res.data.objects
-      })
-    })
+    var self=this;
+    wx.showLoading({
+      title: '加载中',
+      success:function(){
+        var ImageTable = new wx.BaaS.TableObject(table.image.id);
+        var CommentTable = new wx.BaaS.TableObject(table.comments.id);
+        var query = new wx.BaaS.Query();
+        query.compare('albumid', '=', self.data.albumid);
+        ImageTable.setQuery(query).orderBy('created_at').find().then(res => {
+          self.setData({
+            imageList: res.data.objects
+          })
+          wx.hideLoading();
+        })
+      }
+    }) 
   },
   setLike:function(e){
     var id=e.target.id;
