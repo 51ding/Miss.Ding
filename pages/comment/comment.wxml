@@ -1,0 +1,20 @@
+<view class='container'>
+  <view class='comment' wx:for="{{commentList}}" wx:key="{{item.id}}">
+    <view class='comment-title'>
+      <image src='{{item.avatarUrl}}'></image>
+       <text>{{item.nickName}}</text>
+       <text class='date'>{{item.CrreatedTime}}</text>
+    </view>
+    <view class='comment-content'>
+      {{item.content}}
+    </view>
+  </view>
+</view>
+<view class='commentPanel'>
+ <view class='writePanel'>  
+  <image src='../../image/write.png' mode="widthFix"></image>
+  <input type="text" value="{{content}}" bindinput="writeComment" confirm-type="send" placeholder="来都来了不说两句！"></input>
+  <image src='../../image/send.png' mode="widthFix" bindtap='sendComment'></image>
+ </view>
+
+</view>

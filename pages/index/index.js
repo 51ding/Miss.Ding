@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
+var table = require("../../utils/table.js");
 const app = getApp()
-
 Page({
   data: {
     name: "",
@@ -10,89 +10,83 @@ Page({
     musicAnimation: null,
     interval: null,
     n: 0,
-    isShow:false
+    isShow: false,
+    albumid: "",
+    fileCount:0,
+    currentFile: 0,
+    fileTotal: 0,
+    imageList:[],
+    isLike:false
   },
-  onLoad: function() {
-    
-  },
-  onShow: function() {
+  onLoad: function(option) {
+    this.setData({
+      albumid: option.albumid || "5b986c9fd6f4ae24839bb7d7"
+    });
     this.createAnimation();
     this.startAnimation();
     setTimeout(this.initMusicPlayer.bind(this), 1000);
+    this.getImageData();
   },
-  onHide:function(){
-    this.stopAnimation();
-    this.setData({
-      n: 0
-    })
+  onShow: function() {
+    
+  },
+  onHide: function() {
+    //this.clearAnimation();
+    //this.stopAnimation();
+  },
+  onUnload:function(){
+  
   },
   bindName: function(e) {
     this.setData({
       name: e.detail.value
     })
   },
-  uploadFile: function() {
-    var option = {
-      count: 9,
-      success: function(res) {
-        res.tempFilePaths.forEach(file => {
-          let MyFile = new wx.BaaS.File()
-          let fileParams = {
-            filePath: file
-          }
-          let metaData = {
-            categoryName: 'SDK'
-          };
-          MyFile.upload(fileParams, metaData).then(res => {
-            console.log(res);
-            var {
-              statusCode,
-              data
-            } = res;
-            if (statusCode == 200) {
-              let tableId = "49944";
-              let Images = new wx.BaaS.TableObject(tableId);
-              let image = Images.create();
-              var {
-                cdn_path,
-                created_at,
-                id,
-                mime_type,
-                name,
-                size
-              } = data.file;
-              image.set({
-                url: data.path.replace("https", "http"),
-                fileid: id,
-                cdn_path,
-                filecreated_at: created_at,
-                mime_type,
-                filename: name,
-                size
-              }).save().then(() => {
-                console.log("保存成功！");
-              })
-            } else {
-
-            }
-          }, err => {
-
-          });
-        })
-      },
-      fail: function() {
-
-      },
-      complete: function() {
-
+  uploadFile: function(filePathList,cb) {
+    var self=this;
+    this.setData({
+      fileTotal: filePathList.length
+    });
+    filePathList.forEach(file => {
+      let MyFile = new wx.BaaS.File()
+      let fileParams = {
+        filePath: file
       }
-    };
-    wx.chooseImage(option);
+      let metaData = {
+        categoryName: 'SDK'
+      };
+      MyFile.upload(fileParams, metaData).then(res => {
+        var {
+          statusCode,
+          data
+        } = res;
+        if (statusCode == 200) {
+          let tableId = table.image.id;
+          let Images = new wx.BaaS.TableObject(tableId);
+          let image = Images.create();
+          image.set({
+            url: data.path,
+            albumid: this.data.albumid
+          }).save().then(res=>{
+            var current = ++self.data.fileCount;
+            self.setData({
+              fileCount: current,
+              percent: Math.floor(current / this.data.fileTotal * 100)
+            });
+            if (self.data.fileCount == self.data.fileTotal) return cb(data.path);
+          });
+        } else {
+
+        }
+      }, err => {
+
+      });
+    })
   },
   playVocice: function() {
     const innerAudioContext = wx.createInnerAudioContext()
     innerAudioContext.autoplay = true
-    innerAudioContext.src = 'http://cloud-minapp-19585.cloud.ifanrusercontent.com/1fvdPLrTIvoEJwpS.mp3'
+    innerAudioContext.src = 'https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fzLX7pigCLDhpdO.mp3'
     innerAudioContext.onPlay(() => {
       console.log('开始播放')
     })
@@ -108,7 +102,7 @@ Page({
     backgroundAudioManager.epname = '此时此刻'
     backgroundAudioManager.singer = '许巍'
     backgroundAudioManager.coverImgUrl = 'http://y.gtimg.cn/music/photo_new/T002R300x300M000003rsKF44GyaSk.jpg?max_age=2592000'
-    backgroundAudioManager.src = 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E061FF02C31F716658E5C81F5594D561F2E88B854E81CAAB7806D5E4F103E55D33C16F3FAC506D1AB172DE8600B37E43FAD&fromtag=46' // 设置了 src 之后会自动播放
+    backgroundAudioManager.src = 'https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fzLX7pigCLDhpdO.mp3' // 设置了 src 之后会自动播放
   },
   operateMusicPlayer: function() {
     var status = this.data.innerAudioContext.paused;
@@ -127,7 +121,7 @@ Page({
     const innerAudioContext = wx.createInnerAudioContext();
     innerAudioContext.autoplay = true;
     innerAudioContext.loop = true;
-    innerAudioContext.src = "https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fvdPLrTIvoEJwpS.mp3";
+    innerAudioContext.src = "https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fzLX7pigCLDhpdO.mp3";
     this.setData({
       innerAudioContext: innerAudioContext
     })
@@ -142,7 +136,7 @@ Page({
     })
   },
   rotateAni: function(n) {
-    console.log(n);
+    console.log("x", n);
     this.animation.rotate(180 * (n)).step()
     this.setData({
       musicAnimation: this.animation.export()
@@ -168,9 +162,83 @@ Page({
   stopAnimation: function() {
     clearInterval(this.data.interval);
   },
-  uploadPanel:function(){
-    this.setData({
-      isShow: !this.data.isShow
+  uploadPanel: function() {
+    var self = this;
+    var actionList = ["拍摄照片", "上传图片", "上传视频"];
+    wx.showActionSheet({
+      itemList: actionList,
+      success: function(res) {
+        self.handleAction(res.tapIndex);
+      }
     })
-  }
+  },
+  handleAction: function(index) {
+    //拍照上传
+    if (index == 0) {
+
+    }
+    //从相册读取
+    else if (index == 1) {
+      this.handleImage();
+    }
+    //上传视频
+    else if (index == 2) {
+
+    } else {}
+  },
+  handleImage: function() {
+    var self = this;
+    var options = {
+      count: 9,
+      sourceType: ["album"],
+      success: function(res) {
+        self.uploadFile(res.tempFilePaths,self.saveCompleteHandler.bind(self));
+      }
+    }
+    wx.chooseImage(options);
+  },
+  clearAnimation: function() {
+    this.rotateAni(0);
+    this.stopAnimation();
+    this.setData({
+      n: 0,
+      interval: null,
+      musicAnimation: null
+    })
+  },
+  saveCompleteHandler:function(url){
+     this.setData({
+       fileCount: 0,
+       currentFile: 0,
+       fileTotal: 0
+     })
+    var AlbumTable = new wx.BaaS.TableObject(table.album.id);
+    var record = AlbumTable.getWithoutData(this.data.albumid);
+    record.set("firstUrl", url);
+    record.update();
+    this.getImageData();
+  },
+  getImageData:function(){
+    var ImageTable = new wx.BaaS.TableObject(table.image.id);
+		var CommentTable=new wx.BaaS.TableObject(table.comments.id);
+    var query = new wx.BaaS.Query();
+    query.compare('albumid', '=', this.data.albumid);
+    ImageTable.setQuery(query).orderBy('created_at').find().then(res=>{
+      this.setData({
+        imageList: res.data.objects
+      })
+    })
+  },
+  setLike:function(e){
+    var id=e.target.id;
+    this.setData({
+      isLike: !this.data.isLike
+    })
+  },
+	navigateCommentList:function(e){
+		var url="../comment/comment?imageid="+e.target.id;
+		wx.navigateTo({
+			url
+		})
+	}
 })

@@ -1,0 +1,53 @@
+<view class='max-box'>
+  <view class="container">
+    <view class='box' wx:for="{{albumList}}" wx:for-item="itemName" wx:key="{{itemName.id}}" bindtap='toAlbum' data-id="{{itemName.id}}">
+      <view class='box-image'>
+        <image src='{{itemName.firstUrl}}' mode='aspectFill'></image>
+      </view>
+       <view class='box-title'>{{itemName.name}}</view>
+    </view>
+    <view class='box' catchtap="fadeIn">
+      <view class='box-image box-add-image'>
+        <image src='../../image/add-album.png' mode='widthFix'></image>
+      </view>
+      <view class='box-title'>点我添加相册</view>
+    </view>
+  </view>
+  <view class='add-album' animation="{{fadeIn}}">
+    <view class='add-album-title'>
+      <text>创建相册</text>
+      <view class='add-album-title-icon' catchtap='fadeOut'>
+        <image src='../../image/close.png' mode='widthFix'></image>
+      </view>
+    </view>
+    <view class='add-album-content'>
+      <view class='album-name'>
+        <text class='tiptop'></text>
+        <image src='../../image/name.png' mode='widthFix'></image>
+        <text>相册名称</text>
+      </view>
+      <view class='album-name-input'>
+        <input type="text" adjust-position="true" placeholder="肉肉输入相册名称" bindinput="albumName"></input>
+      </view>
+      <view class='album-name'>
+        <text class='tiptop'></text>
+        <image src='../../image/lock.png' mode='widthFix'></image>
+        <text>相册权限</text>
+      </view>
+      <view class='album-name-input'>
+        <radio-group bindchange="checkboxChange">
+          <label class="checkbox">
+            <radio value="所有人可上传" color="#6CAEF8" checked='true' />所有人可上传
+          </label>
+          <label class="checkbox">
+            <radio value="只有自己能上传" color='#6CAEF8' />只有自己能上传
+          </label>
+        </radio-group>
+      </view>
+
+    </view>
+    <view class='create-album' bindtap='createAlbum'>
+      创建相册
+    </view>
+  </view>
+</view>

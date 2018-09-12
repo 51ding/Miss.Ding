@@ -7,5 +7,8 @@ module.exports={
   },
   image:{
     id:50812
+  },
+  comments:{
+    id: 51478
   }
 }

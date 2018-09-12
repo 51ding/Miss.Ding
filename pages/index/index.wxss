@@ -6,7 +6,8 @@ view {
 page {
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to right, #d299c2 0%, #fef9d7 100%);
+  /* background-image: linear-gradient(to right, #d299c2 0%, #fef9d7 100%); */
+  background-image: url("https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fzu6TppQBuBVNDc.jpg");
   background-repeat: repeat-y;
 }
 
@@ -24,10 +25,12 @@ page {
   height: 100%;
   overflow: auto;
   overflow: hidden;
+  border-radius: 6px;
 }
 
 .card image {
   width: 100%;
+  border-radius: 6px;
   border-radius: 6px;
 }
 
@@ -43,7 +46,7 @@ page {
 }
 
 .uploadImage image {
-  width: 55%;
+  width: 50%;
   vertical-align: middle;
 }
 
@@ -85,3 +88,46 @@ page {
   top:50%;
   background-color:red;
 }
+
+.mask{
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom:0;
+  background-color: #000;
+  z-index: 2000;
+    opacity:.2;
+}
+
+.progress-content{
+  position: fixed;
+  width: 70%;
+  left: 15%;
+  top: 40%;
+  background-color: #fff;
+  z-index: 2001;
+  padding: 30rpx 20rpx;
+  border-radius: 5px;
+}
+
+.progress-name{
+  text-align: center;
+}
+
+.foot-container{
+	display: flex;
+  flex-direction: row-reverse;
+  align-items:center;
+}
+
+.foot-container image{
+  width: 40rpx;
+  margin-left: 12rpx;
+}
+.foot-container text{
+  margin-left:5rpx;
+}
+
+
+

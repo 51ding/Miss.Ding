@@ -1,13 +1,15 @@
 {
-  "pages":[
+  "pages": [
+    "pages/home/home",
     "pages/index/index",
+    "pages/comment/comment",
     "pages/logs/logs"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "E8CACD",
+  "window": {
+    "navigationBarBackgroundColor": "#f5f7fa",
+    "backgroundTextStyle": "light",
     "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   },
   "plugins": {
     "sdkPlugin": {

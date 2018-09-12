@@ -8,7 +8,6 @@ App({
     wx.BaaS.wxExtend(wx.login,
       wx.getUserInfo,
       wx.requestPayment)
-
     let clientID = config.clientID;
     wx.BaaS.init(clientID)
     

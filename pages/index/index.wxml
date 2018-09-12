@@ -1,24 +1,12 @@
 <view class='container'>
-  <view class='card'>
-    <image src='https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fvlI4LkbZiKCNvC.png' mode='widthFix'></image>
-  </view>
-  <view class='card'>
-    <image src='https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fyAFRwrzoiuPgzM.png'  mode='widthFix'></image>
-  </view>
-  <view class='card'>
-    <image src='https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fyAFNMEXUVIYKyM.png'  mode='widthFix'></image>
-  </view>
-  <view class='card' >
-    <image src='https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fvg2HlVnOpQAuXk.jpg'  mode='widthFix'></image>
-  </view>
-   <view class='card' >
-    <image src='https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fyD4HKwQowsNIrd.jpg'  mode='widthFix'></image>
-  </view>
-   <view class='card' >
-    <image src='https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fyD4EbFGZeaDtsM.jpg'  mode='widthFix'></image>
-  </view>
-   <view class='card' >
-    <image src='https://cloud-minapp-19585.cloud.ifanrusercontent.com/1fyD48LqvTVSvqOz.jpeg'  mode='widthFix'></image>
+  <view class='card' wx:for="{{imageList}}" wx:for-index="id" wx:for-item="itemName" wx:key="{{id}}">
+    <image src="{{itemName.url}}" mode='widthFix'></image>
+    <view class="foot-container">
+      <text>12</text>
+      <image  id="{{itemName.id}}" src='{{!isLike?"../../image/dotlike.png":"../../image/like.png"}}' mode='widthFix' bindtap='setLike'></image>
+      <text>{{itemName.commentTotal}}</text>
+      <image  id="{{itemName.id}}" src='../../image/comment.png' bindtap="navigateCommentList"   mode='widthFix'></image>
+    </view>
   </view>
 </view>
 <view bindtap="operateMusicPlayer" class='music-container'>
@@ -31,6 +19,9 @@
   <text class='align'></text>
   <image src='/image/camera.png' mode='widthFix'></image>
 </view>
-<view class='upload' wx-if="{{isShow}}" >
-  
+<view wx:if="{{fileTotal>0}}" class="mask">
+</view>
+<view class='progress-content' wx:if="{{fileTotal>0}}">
+  <view class='progress-name'>上传中（{{fileCount}}/{{fileTotal}}）</view>
+  <progress percent="{{percent}}" show-info color="#6CAEF8" />
 </view>
