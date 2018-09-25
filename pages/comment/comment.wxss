@@ -15,13 +15,13 @@
 }
 
 .comment-title image {
-  width: 60rpx;
-  height: 60rpx;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 }
 
 .comment-title .date {
-  font-size: 35rpx;
+  font-size: 14px;
   color: #777;
   position: absolute;
   right: 30rpx;
@@ -30,8 +30,12 @@
 .comment text {
   font-weight: bold;
   color: #333;
-  font-size: 35rpx;
+  font-size: 13px;
   margin-left: 25rpx;
+}
+
+#nick-name{
+  font-size:16px;
 }
 
 .comment-content {
@@ -39,6 +43,8 @@
   font-size: 37rpx;
   letter-spacing: 2px;
   text-align: justify;
+  word-break:break-all;
+  white-space:normal;
 }
 
 .commentPanel {
@@ -47,7 +53,7 @@
   left: 0;
   bottom: 0;
   border-top: 1px solid #ccc;
-  height: 70rpx;
+  height: 38px;
   padding: 20rpx 30rpx;
   background-color: #fff;
 }
@@ -58,18 +64,30 @@
   border-radius: 45px;
   display: flex;
   flex-direction: row;
-  ruby-align: center;
+  align-items: center;
   padding: 10rpx;
 }
 
 .writePanel image {
-  width: 50rpx;
-  margin-left: 30rpx;
+  display: inline-block;
+  width: 30px;
+  margin-left: 20rpx;
   margin-right: 20rpx;
 }
 
 .writePanel input {
-  display: inline-block;
-  width: 500rpx;
-  font-size: 30rpx;
+     -webkit-appearance: none;
+    background-color: #ccc;
+    background-image: none;
+    border-radius: 4px;
+    color: #606266;
+    display: inline-block;
+    font-size: 17px;
+    height: 30px;
+    line-height: 30px;
+    outline: none;
+    padding: 0 3px;
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    width: 100%;
 }
+

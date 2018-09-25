@@ -1,8 +1,9 @@
 {
   "pages": [
-    "pages/home/home",
+        "pages/home/home",
+        "pages/comment/comment",
     "pages/index/index",
-    "pages/comment/comment",
+
     "pages/logs/logs"
   ],
   "window": {

@@ -24,7 +24,7 @@ Page({
   onLoad: function(options) {
     var self = this;
     this.setData({
-      imageid: options.imageid
+      imageid: options.imageid 
     });
     var self = this;
     wx.getUserInfo({
